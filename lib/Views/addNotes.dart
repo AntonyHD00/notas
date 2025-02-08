@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AddNote extends StatefulWidget {
-  final Function(String, String) onSave; // Modificamos la función para aceptar título y contenido
+  final Function(String, String) onSave;
 
   const AddNote({super.key, required this.onSave});
 

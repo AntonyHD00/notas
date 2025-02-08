@@ -33,7 +33,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectIndex = 0;
-  // Cambia la estructura de las notas para incluir título y contenido
   final List<Map<String, String>> _notes = []; 
 
   void _addNote(String title, String content) {
@@ -43,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   }
     void _deleteNote(int index) {
     setState(() {
-      _notes.removeAt(index); // Elimina la nota de la lista
+      _notes.removeAt(index);
     });
   }
 
@@ -52,8 +51,8 @@ class _HomePageState extends State<HomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final List<Widget> _pages = [
-      Notasview(notas: _notes,onDelete: _deleteNote),   // Se pasa la lista de notas a Notasview
-      AddNote(onSave: _addNote),  // Se pasa la función para agregar notas
+      Notasview(notas: _notes,onDelete: _deleteNote),
+      AddNote(onSave: _addNote),
       const perfildeusuario(),
     ];
 

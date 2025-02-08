@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Notasview extends StatefulWidget {
   final List<Map<String, String>> notas;
-  final Function(int) onDelete; // Nueva función para eliminar una nota
+  final Function(int) onDelete;
 
   const Notasview({super.key, required this.notas, required this.onDelete});
 
@@ -52,7 +52,7 @@ class _NotasviewState extends State<Notasview> {
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
-                            widget.onDelete(index); // Llamar la función de eliminación
+                            widget.onDelete(index);
                           },
                         ),
                       ],

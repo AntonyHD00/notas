@@ -10,7 +10,7 @@ class perfildeusuario extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const SizedBox(height: 50), // Espaciado superior
+            const SizedBox(height: 50),
             const CircleAvatar(
               radius: 50,
               backgroundColor: Colors.lightBlue,
