@@ -13,6 +13,7 @@ class Notasview extends StatefulWidget {
 class _NotasviewState extends State<Notasview> {
   @override
   Widget build(BuildContext context) {
+    print('Notas en Notasview: ${widget.notas}');
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Padding(
@@ -35,27 +36,14 @@ class _NotasviewState extends State<Notasview> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.notas[index]['title'] ?? 'Sin título',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () {
-                            widget.onDelete(index);
-                          },
-                        ),
-                      ],
+                    Text(
+                      widget.notas[index]['title'] ?? 'Sin título',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
                     Expanded(
@@ -64,6 +52,16 @@ class _NotasviewState extends State<Notasview> {
                         style: const TextStyle(fontSize: 14),
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          widget.onDelete(index);
+                        },
                       ),
                     ),
                   ],

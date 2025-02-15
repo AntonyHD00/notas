@@ -1,7 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class perfildeusuario extends StatelessWidget {
-  const perfildeusuario({super.key});
+class PerfilDeUsuario extends StatefulWidget {
+  const PerfilDeUsuario({super.key});
+
+  @override
+  State<PerfilDeUsuario> createState() => _PerfilDeUsuarioState();
+}
+
+class _PerfilDeUsuarioState extends State<PerfilDeUsuario> {
+  String _nombre = 'Antony Joseph';
+  String _email = 'antonyjoseph.uni@gmail.com';
+
+  final TextEditingController _nombreController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarDatos();
+  }
+
+  Future<void> _cargarDatos() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _nombre = prefs.getString('nombre') ?? 'Antony Joseph';
+      _email = prefs.getString('email') ?? 'antonyjoseph.uni@gmail.com';
+    });
+  }
+
+  Future<void> _guardarDatos() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('nombre', _nombre);
+    await prefs.setString('email', _email);
+  }
+
+  void _editarPerfil() {
+    _nombreController.text = _nombre;
+    _emailController.text = _email;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Editar Perfil'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _nombreController,
+                decoration: const InputDecoration(labelText: 'Nombre'),
+              ),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Correo'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _nombre = _nombreController.text;
+                  _email = _emailController.text;
+                });
+                _guardarDatos();
+                Navigator.pop(context);
+              },
+              child: const Text('Guardar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,22 +91,22 @@ class perfildeusuario extends StatelessWidget {
             const SizedBox(height: 50),
             const CircleAvatar(
               radius: 50,
-              backgroundColor: Colors.lightBlue,
+              backgroundColor: Colors.deepOrange,
               child: Icon(
                 Icons.person,
                 size: 60,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Antony Joseph',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              _nombre,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'antonyjoseph.uni@gmail.com',
-              style: TextStyle(color: Colors.grey),
+            Text(
+              _email,
+              style: const TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 24),
             Card(
@@ -41,7 +119,7 @@ class perfildeusuario extends StatelessWidget {
                   _buildListTile(
                     icon: Icons.person,
                     text: 'Editar Perfil',
-                    onTap: () {},
+                    onTap: _editarPerfil,
                   ),
                   _buildDivider(),
                   _buildListTile(
@@ -75,20 +153,13 @@ class perfildeusuario extends StatelessWidget {
   }) {
     return ListTile(
       leading: Icon(icon, color: iconColor),
-      title: Text(
-        text,
-        style: TextStyle(color: textColor),
-      ),
+      title: Text(text, style: TextStyle(color: textColor)),
       trailing: const Icon(Icons.arrow_forward_ios, size: 18),
       onTap: onTap,
     );
   }
 
   Widget _buildDivider() {
-    return const Divider(
-      height: 1,
-      thickness: 1,
-      color: Colors.grey,
-    );
+    return const Divider(height: 1, thickness: 1, color: Colors.grey);
   }
 }

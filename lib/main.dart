@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notas/LocalStorage/local_storage_repository.dart';
 import 'package:notas/Views/addNotes.dart';
 import 'package:notas/Views/notasView.dart';
 import 'package:notas/Views/perfil.dart';
@@ -33,17 +34,39 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectIndex = 0;
-  final List<Map<String, String>> _notes = []; 
+  List<Map<String, String>> _notes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotes();
+  }
+
+  Future<void> _loadNotes() async {
+    final notes = await LocalStorageRepository.loadNotes();
+    print('Notas cargadas: $notes');
+    setState(() {
+      _notes = notes;
+    });
+  }
+
+  Future<void> _saveNotes() async {
+    print('Guardando notas: $_notes');
+    await LocalStorageRepository.saveNotes(_notes);
+  }
 
   void _addNote(String title, String content) {
     setState(() {
       _notes.add({'title': title, 'content': content});
     });
+    _saveNotes();
   }
-    void _deleteNote(int index) {
+
+  void _deleteNote(int index) {
     setState(() {
       _notes.removeAt(index);
     });
+    _saveNotes();
   }
 
   @override
@@ -51,9 +74,9 @@ class _HomePageState extends State<HomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final List<Widget> _pages = [
-      Notasview(notas: _notes,onDelete: _deleteNote),
+      Notasview(notas: _notes, onDelete: _deleteNote),
       AddNote(onSave: _addNote),
-      const perfildeusuario(),
+      const PerfilDeUsuario(),
     ];
 
     return Scaffold(
